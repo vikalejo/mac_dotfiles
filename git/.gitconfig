@@ -1,0 +1,57 @@
+[user]
+	# Set these on each machine or in ~/.gitconfig.local
+	# name = Victor Alejo
+	# email = your@email.com
+
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+	pager = less -FRX
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = current
+
+[fetch]
+	prune = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[rerere]
+	enabled = true
+
+[alias]
+	s = status -sb
+	co = checkout
+	br = branch
+	ci = commit
+	ca = commit --amend
+	cm = commit -m
+	lg = log --oneline --graph --decorate --all
+	last = log -1 HEAD --stat
+	unstage = reset HEAD --
+	d = diff
+	ds = diff --staged
+	p = pull
+	ps = push
+	pf = push --force-with-lease
+	stash-all = stash save --include-untracked
+	wip = !git add -A && git commit -m 'WIP'
+
+[color]
+	ui = auto
+
+[include]
+	# Machine-specific overrides (name, email, signing key, etc.)
+	path = ~/.gitconfig.local

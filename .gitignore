@@ -1,0 +1,10 @@
+# Secrets - NEVER commit these
+.env.local
+*.local
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo

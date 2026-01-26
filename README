@@ -1,0 +1,53 @@
+Structure
+
+  dotfiles/
+  ├── setup.sh                  # One-command setup for a new Mac
+  ├── Brewfile                  # All Homebrew packages + casks
+  ├── .gitignore                # Keeps secrets out of git
+  ├── zsh/
+  │   ├── .zshrc                # Main shell config (Oh My Zsh + modular sourcing)
+  │   ├── aliases.zsh           # All your aliases (Rails, Docker, Git, navigation)
+  │   ├── exports.zsh           # PATH, history, locale settings
+  │   ├── functions.zsh         # Utility functions (mkcd, killport, extract, etc.)
+  │   └── .env.local.example    # Template for secrets (NOT committed)
+  ├── vim/
+  │   └── .vimrc                # Your Vim config (enhanced with fzf, fugitive, persistent undo)
+  ├── git/
+  │   ├── .gitconfig            # Git aliases, rebase-on-pull, includes ~/.gitconfig.local
+  │   └── .gitignore_global     # Global ignores (.DS_Store, .env, node_modules, etc.)
+  ├── tmux/
+  │   └── .tmux.conf            # Tmux config (Ctrl-a prefix, vim nav, copy mode)
+  ├── macos/
+  │   └── defaults.sh           # macOS prefs (fast key repeat, Dock, Finder, screenshots)
+  └── install/
+      ├── brew.sh               # Installs Homebrew + Brewfile
+      ├── ohmyzsh.sh            # Installs Oh My Zsh + plugins
+      ├── rvm.sh                # Installs RVM + Ruby 3.4
+      ├── nvm.sh                # Installs NVM + LTS Node + yarn/pnpm/typescript
+      ├── vim-plug.sh           # Installs vim-plug + all Vim plugins
+      └── symlinks.sh           # Symlinks everything to ~/
+
+  How to use on a new Mac
+
+  # 1. Clone your repo
+  git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
+  cd ~/dotfiles
+
+  # 2. Run the setup (installs everything automatically)
+  ./setup.sh
+
+  # 3. Fill in your secrets
+  vim ~/.env.local
+
+  # 4. Set your git identity
+  git config --file ~/.gitconfig.local user.name "Victor Alejo"
+  git config --file ~/.gitconfig.local user.email "you@email.com"
+
+  Key design decisions
+
+  - Secrets are separated -- Your AWS profiles, Sidekiq password, and CodeArtifact tokens go in ~/.env.local (git-ignored), not in
+  the repo
+  - Modular zsh config -- Aliases, exports, and functions are in separate files for clarity
+  - Git identity via ~/.gitconfig.local -- Each machine can have its own name/email without changing the repo
+  - Symlinks, not copies -- Changes to the repo are instantly live (no re-running scripts)
+  - Idempotent -- Running setup.sh multiple times is safe; it skips what's already installed
