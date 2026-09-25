@@ -12,6 +12,15 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-endwise'
 
+" JavaScript / TypeScript / React (Next.js)
+Plug 'pangloss/vim-javascript'          " JS syntax & indentation
+Plug 'HerringtonDarkholme/yats.vim'     " TypeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'         " JSX/TSX highlighting
+Plug 'mattn/emmet-vim'                   " Emmet: expand JSX/HTML fast
+
+" Completion / LSP (coc.nvim) — powers TS/JS IntelliSense, Tailwind, etc.
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " Editing
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -81,15 +90,15 @@ set nowrap                     " No line wrapping
 autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
 
 " ---- ALE Config ----
+" coc.nvim owns JS/TS/TSX diagnostics, completion and formatting (via
+" coc-tsserver / coc-eslint / coc-prettier). ALE is scoped to Ruby to avoid
+" duplicate eslint diagnostics, and defers all LSP to coc.
+let g:ale_disable_lsp = 'auto'
 let g:ale_linters = {
 \   'ruby': ['rubocop'],
-\   'javascript': ['eslint'],
-\   'typescript': ['eslint'],
 \}
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
-\   'javascript': ['eslint', 'prettier'],
-\   'typescript': ['eslint', 'prettier'],
 \}
 let g:ale_fix_on_save = 1
 
@@ -126,8 +135,79 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" ALE fix shortcut
-nmap <silent> <Leader>f :ALEFix<CR>
+" Format shortcut — coc (Prettier/ESLint) for JS/TS, ALEFix for Ruby/others
+function! s:FormatBuffer() abort
+  if index(['javascript', 'javascriptreact', 'typescript', 'typescriptreact',
+        \   'json', 'jsonc', 'css', 'scss', 'html'], &filetype) >= 0
+    call CocActionAsync('format')
+  else
+    ALEFix
+  endif
+endfunction
+nnoremap <silent> <Leader>f :call <SID>FormatBuffer()<CR>
 
 " ---- vim-ai ----
 let g:vim_ai_roles_config_file = '~/.vim_ai_config/roles.ini'
+
+" ---- Copilot ----
+" Free Tab for the coc completion menu; accept Copilot suggestions with <C-l>.
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+
+" ---- Emmet (JSX/HTML) ----
+" Expand with <C-y>, (default). Scope to JS/TS/React + markup filetypes.
+let g:user_emmet_settings = {
+\   'javascript': {'extends': 'jsx'},
+\   'typescript': {'extends': 'jsx'},
+\ }
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,javascript,javascriptreact,typescript,typescriptreact EmmetInstall
+
+" ---- coc.nvim (completion / LSP) ----
+" Extensions installed via install/vim-plug.sh:
+"   coc-tsserver coc-eslint coc-prettier coc-tailwindcss coc-json coc-css coc-html
+
+" Tab / Shift-Tab to navigate the completion menu; <CR> confirms.
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ <SID>CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+      \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! s:CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+" Trigger completion manually
+inoremap <silent><expr> <C-space> coc#refresh()
+
+" Navigation (LSP)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Diagnostics: jump between errors/warnings
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Hover docs with K
+nnoremap <silent> K :call <SID>ShowDocumentation()<CR>
+function! s:ShowDocumentation() abort
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Symbol rename and code actions (imports, quick fixes)
+nmap <Leader>rn <Plug>(coc-rename)
+nmap <Leader>ca <Plug>(coc-codeaction-cursor)
+xmap <Leader>ca <Plug>(coc-codeaction-selected)
+
+" Highlight the symbol under the cursor and its references
+autocmd CursorHold * silent call CocActionAsync('highlight')

@@ -32,6 +32,8 @@ link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 
 # Vim
 link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
+mkdir -p "$HOME/.vim"
+link_file "$DOTFILES_DIR/vim/coc-settings.json" "$HOME/.vim/coc-settings.json"
 
 # Git
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"

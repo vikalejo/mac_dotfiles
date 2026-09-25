@@ -11,7 +11,8 @@ Structure
   │   ├── functions.zsh         # Utility functions (mkcd, killport, extract, etc.)
   │   └── .env.local.example    # Template for secrets (NOT committed)
   ├── vim/
-  │   └── .vimrc                # Your Vim config (enhanced with fzf, fugitive, persistent undo)
+  │   ├── .vimrc                # Your Vim config (fzf, fugitive, persistent undo, coc.nvim IDE)
+  │   └── coc-settings.json     # coc.nvim: TS/JS, ESLint, Prettier, Tailwind (symlinked to ~/.vim/)
   ├── git/
   │   ├── .gitconfig            # Git aliases, rebase-on-pull, includes ~/.gitconfig.local
   │   └── .gitignore_global     # Global ignores (.DS_Store, .env, node_modules, etc.)
@@ -42,6 +43,25 @@ Structure
   # 4. Set your git identity
   git config --file ~/.gitconfig.local user.name "Victor Alejo"
   git config --file ~/.gitconfig.local user.email "you@email.com"
+
+  Vim as a Next.js / React IDE
+
+  The Vim config doubles as a lightweight IDE for TypeScript/React (Next.js) work,
+  powered by coc.nvim (needs Node.js, installed via the Brewfile / NVM):
+
+  - Autocompletion & IntelliSense -- coc-tsserver for TS/JS, coc-tailwindcss for
+    Tailwind class completion (incl. cn()/cva() helpers), plus JSON/CSS/HTML.
+  - React (JSX/TSX) -- vim-jsx-pretty highlighting, yats.vim for TypeScript,
+    Emmet (<C-y>,) to scaffold components.
+  - Linting/formatting -- coc-eslint + coc-prettier auto-fix and format on save;
+    ALE is scoped to Ruby to avoid duplicate diagnostics.
+  - Navigation -- gd (definition), gy (type def), gi (implementation),
+    gr (references), K (hover docs), [g / ]g (diagnostics), <Leader>rn (rename),
+    <Leader>ca (code action, e.g. auto-import), <Leader>f (format).
+  - Copilot -- suggestions accepted with <C-l> (Tab drives the coc menu).
+
+  First run installs coc extensions automatically; otherwise run
+  :CocInstall coc-tsserver coc-eslint coc-prettier coc-tailwindcss coc-json coc-css coc-html
 
   Key design decisions
 
