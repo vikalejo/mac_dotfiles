@@ -1,5 +1,5 @@
-# Taps
-tap "homebrew/bundle"
+# Note: `brew bundle` is built into Homebrew core; the homebrew/bundle tap was
+# deprecated and removed, so it is no longer tapped here.
 
 # ----- CLI Tools -----
 brew "coreutils"
@@ -24,7 +24,8 @@ brew "starship"              # Optional: modern prompt (comment out if using Oh 
 
 # ----- Languages & Runtimes -----
 brew "node"
-brew "ruby"
+# Ruby is managed by RVM (see install/rvm.sh), not Homebrew — a `brew "ruby"`
+# entry makes `brew bundle` install/upgrade a parallel Ruby (now 4.x) we don't use.
 brew "python@3.13"
 brew "lua"
 
@@ -49,7 +50,7 @@ brew "libksba"
 
 # ----- macOS Apps (Casks) -----
 cask "iterm2"
-cask "docker"
+cask "docker-desktop"        # Renamed from the deprecated "docker" cask
 cask "rectangle"             # Window management
 cask "the-unarchiver"
 cask "android-platform-tools"
