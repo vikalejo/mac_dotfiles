@@ -78,6 +78,18 @@ set updatetime=300             " Faster updates (default 4000ms)
 set timeoutlen=500             " Faster key sequence completion
 set splitbelow                 " Open horizontal splits below
 set splitright                 " Open vertical splits to the right
+set equalalways                " Keep splits equal-sized when opening/closing
+set eadirection=both           " Equalize width AND height, not just one axis
+set winminheight=3             " Never let a split collapse below 3 lines
+set winminwidth=10             " Never let a split collapse below 10 columns
+" Auto re-balance all splits when the terminal resizes or a new split opens
+augroup AutoBalanceSplits
+  autocmd!
+  autocmd VimResized * wincmd =
+  autocmd WinNew * wincmd =
+augroup END
+" Manual re-balance shortcut (in addition to the default <C-w>=)
+nnoremap <Leader>= <C-w>=
 set ignorecase                 " Case insensitive search...
 set smartcase                  " ...unless uppercase is used
 set undofile                   " Persistent undo
