@@ -34,3 +34,5 @@ vendor/bundle/
 *.o
 *.pyc
 __pycache__/
+
+**/.claude/settings.local.json
