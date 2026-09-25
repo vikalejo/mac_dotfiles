@@ -1,0 +1,43 @@
+{
+  "// Symlinked to ~/.vim/coc-settings.json by install/symlinks.sh": "",
+
+  "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "jsonc",
+    "css",
+    "scss",
+    "markdown"
+  ],
+
+  "// Prettier only runs when the project ships a config (.prettierrc, etc.)": "",
+  "prettier.requireConfig": true,
+
+  "// ESLint: autofix on save, scoped to the JS/TS/React filetypes": "",
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  "// tsserver: richer completions": "",
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.suggest.completeFunctionCalls": true,
+
+  "// Tailwind CSS (v4): class completion inside TSX + cn()/cva() helpers": "",
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ]
+}

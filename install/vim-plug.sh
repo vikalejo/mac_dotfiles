@@ -23,4 +23,13 @@ mkdir -p "$HOME/.vim_ai_config"
 echo "==> Installing Vim plugins..."
 vim +PlugInstall +qall 2>/dev/null || echo "Run :PlugInstall manually in Vim if this failed."
 
+# coc.nvim needs Node.js; extensions are installed separately from plugins.
+if command -v node >/dev/null 2>&1; then
+  echo "==> Installing coc.nvim extensions (TS/JS, ESLint, Prettier, Tailwind)..."
+  vim +'CocInstall -sync coc-tsserver coc-eslint coc-prettier coc-tailwindcss coc-json coc-css coc-html' +qall \
+    2>/dev/null || echo "Run :CocInstall manually in Vim if this failed."
+else
+  echo "==> Skipping coc extensions: Node.js not found (install Node, then run :CocInstall in Vim)."
+fi
+
 echo "==> Vim setup complete."
