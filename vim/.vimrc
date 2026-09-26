@@ -80,6 +80,7 @@ set splitbelow                 " Open horizontal splits below
 set splitright                 " Open vertical splits to the right
 set equalalways                " Keep splits equal-sized when opening/closing
 set eadirection=both           " Equalize width AND height, not just one axis
+set winheight=3                " Current window min height (must be >= winminheight)
 set winminheight=3             " Never let a split collapse below 3 lines
 set winminwidth=10             " Never let a split collapse below 10 columns
 " Auto re-balance all splits when the terminal resizes or a new split opens
