@@ -83,6 +83,11 @@ set eadirection=both           " Equalize width AND height, not just one axis
 set winheight=3                " Current window min height (must be >= winminheight)
 set winminheight=3             " Never let a split collapse below 3 lines
 set winminwidth=10             " Never let a split collapse below 10 columns
+" ---- Mouse ----
+set mouse=a                    " Enable mouse: drag split borders to resize, wheel to scroll
+if !has('nvim')
+  set ttymouse=sgr             " Precise drag/scroll in modern terminals (wide windows, exact drags)
+endif
 " Auto re-balance all splits when the terminal resizes or a new split opens
 augroup AutoBalanceSplits
   autocmd!
